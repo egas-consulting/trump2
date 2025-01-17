@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Face Lineup</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #EFF1F3;
+      text-align: center;
+    }
+
+    .chart-container {
+      width: 95%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+
+    /* Responsive Filters */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .filters .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+    }
+    .filters button {
+      padding: 8px 12px;
+      cursor: pointer;
+      border: 1px solid #8F99AD;
+      border-radius: 8px;
+      background: transparent;
+      color: #2C2D41;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .filters button.active {
+      background-color: #2C2D41;
+      color: #EFF1F3;
+    }
+
+    /* Responsive Face Display */
+    .faces-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px;
+    }
+
+    .face {
+      width: 8vw; /* Dynamically sized */
+      max-width: 80px;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      border-radius: 50%;
+    }
+    .face:hover {
+      transform: scale(1.1);
+    }
+
+    /* Highlight selected face */
+    .face.selected {
+      border: 3px solid #2C2D41;
+    }
+
+    /* Tooltip */
+    .tooltip {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.85);
+      border: 1px solid #999;
+      padding: 10px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      font-size: 13px;
+      font-family: 'Roboto', sans-serif;
+      color: #2C2D41;
+      border-radius: 5px;
+      z-index: 10;
+      max-width: 250px;
+      text-align: left;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .face {
+        width: 12vw; /* Larger images for smaller screens */
+      }
+      .filters {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .face {
+        width: 15vw;
+      }
+      .filters .filter-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chart-container">
+    <!-- Filters -->
+    <div class="filters">
+      <!-- Gender -->
+      <div class="filter-group">
+        <strong>Gen:</strong>
+        <button id="filtruGenBarbati">Bărbați</button>
+        <button id="filtruGenFemei">Femei</button>
+        <button id="filtruGenReset" class="active">Toți</button>
+      </div>
+
+      <!-- Age -->
+      <div class="filter-group">
+        <strong>Vârstă:</strong>
+        <button id="filtruVarstaSub40">Sub 40</button>
+        <button id="filtruVarsta40_60">40-60</button>
+        <button id="filtruVarstaPeste60">Peste 60</button>
+        <button id="filtruVarstaReset" class="active">Toate</button>
+      </div>
+
+      <!-- Position Type -->
+      <div class="filter-group">
+        <strong>Tipul poziției:</strong>
+        <button id="filtruTipCabinet">Cabinet</button>
+        <button id="filtruTipExtern">Externe și instituții</button>
+        <button id="filtruTipCasa">Casa Albă</button>
+        <button id="filtruTipPres">Președinte și Vicepreședinte</button>
+        <button id="filtruTipReset" class="active">Toate</button>
+      </div>
+    </div>
+
+    <!-- Faces container -->
+    <div id="facesContainer" class="faces-container"></div>
+
+    <!-- Tooltip -->
+    <div id="tooltip" class="tooltip"></div>
+  </div>
+
+  <script>
+    let selectedId = null;
+    let hoveredId = null;
+
+    // data
+    let data = [
+      
+      {
+        id: 1,
+        name: "Tulsi Gabbard",
+        function: "directorul serviciilor de informații",
+        age: 43,
+        wealth: "N/A",
+        faceDefault: "gabbard1.png",
+        faceHover: "gabbard.png",
+        image: "gabbard2.png",
+        gender: "f",
+        tipPoz: "cabinet",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+        },
+    
+    {
+        id: 4,
+        name: "Doug Collins",
+        function: "secretarul pentru Veterani",
+        age: 58,
+        wealth: "N/A",
+        faceDefault: "collins1.png",
+        faceHover: "collins.png",
+        image: "collins2.png",
+        gender: "m",
+        tipPoz: "cabinet",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 5,
+        name: "Brooke Rollins",
+        function: "secretarul pentru Agricultură",
+        age: 52,
+        wealth: "N/A",
+        faceDefault: "rollins1.png",
+        faceHover: "rollins.png",
+        image: "rollins2.png",
+        gender: "f",
+        tipPoz: "cabinet",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 6,
+        name: "Sean Duffy",
+        function: "secretarul pentru Transporturi",
+        age: 53,
+        wealth: "N/A",
+        faceDefault: "duffy1.png",
+        faceHover: "duffy.png",
+        image: "duffy2.png",
+        gender: "m",
+        tipPoz: "cabinet",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 7,
+        name: "Martin A. Makary",
+        function: "secretarul pentru Alimentație și Medicamente",
+        age: 54,
+        wealth: "N/A",
+        faceDefault: "makary1.png",
+        faceHover: "makary.png",
+        image: "makary2.png",
+        gender: "m",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 8,
+        name: "Matthew G. Whitaker",
+        function: "ambasador la NATO",
+        age: 55,
+        wealth: "N/A",
+        faceDefault: "whitaker1.png",
+        faceHover: "whitaker.png",
+        image: "whitaker2.png",
+        gender: "m",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    
+    {
+        id: 10,
+        name: "Dave Weldon",
+        function: "directorul Centrelor pentru Controlul și Prevenirea Bolilor",
+        age: 71,
+        wealth: "N/A",
+        faceDefault: "weldon1.png",
+        faceHover: "weldon.png",
+        image: "weldon2.png",
+        gender: "m",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 11,
+        name: "Janette Nesheiwat",
+        function: "chirurgul general",
+        age: 48,
+        wealth: "N/A",
+        faceDefault: "nesheiwat1.png",
+        faceHover: "nesheiwat.png",
+        image: "nesheiwat2.png",
+        gender: "f",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 12,
+        name: "Russell T. Vought",
+        function: "directorul Oficiului pentru Management și Buget",
+        age: 48,
+        wealth: "N/A",
+        faceDefault: "vought1.png",
+        faceHover: "vought.png",
+        image: "vought2.png",
+        gender: "m",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 13,
+        name: "Stephen Miran",
+        function: "președintele Consiliului consultanților economici",
+        age: "N/A",
+        wealth: "N/A",
+        faceDefault: "miran1.png",
+        faceHover: "miran.png",
+        image: "miran2.png",
+        gender: "m",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    
+    {
+        id: 15,
+        name: "Jamieson Greer",
+        function: "reprezentantul SUA pentru Comerț",
+        age: 45,
+        wealth: "N/A",
+        faceDefault: "greer1.png",
+        faceHover: "greer.png",
+        image: "greer2.png",
+        gender: "m",
+        tipPoz: "cabinet",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 16,
+        name: "Jay Bhattacharya",
+        function: "directorul Institutelor de Sănătate",
+        age: 57,
+        wealth: "N/A",
+        faceDefault: "bhattacharya1.png",
+        faceHover: "bhattacharya.png",
+        image: "bhattacharya2.png",
+        gender: "m",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 17,
+        name: "John Phelan",
+        function: "secretarul pentru Marină",
+        age: 61,
+        wealth: "N/A",
+        faceDefault: "phelan1.png",
+        faceHover: "phelan.png",
+        image: "phelan2.png",
+        gender: "m",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 18,
+        name: "Daniel Driscoll",
+        function: "secretarul pentru Armată",
+        age: 39,
+        wealth: "N/A",
+        faceDefault: "driscoll1.png",
+        faceHover: "driscoll.png",
+        image: "driscoll2.png",
+        gender: "m",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 19,
+        name: "Paul Atkins",
+        function: "președintele Comisiei pentru valori mobiliare și burse",
+        age: 66,
+        wealth: "N/A",
+        faceDefault: "atkins1.png",
+        faceHover: "atkins.png",
+        image: "atkins2.png",
+        gender: "m",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 20,
+        name: "Brandon Judd",
+        function: "ambasador în Chile",
+        age: "N/A",
+        wealth: "N/A",
+        faceDefault: "judd1.png",
+        faceHover: "judd.png",
+        image: "judd2.png",
+        gender: "m",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 21,
+        name: "Ronald D. Johnson",
+        function: "ambasador în Mexic",
+        age: "N/A",
+        wealth: "N/A",
+        faceDefault: "johnson1.png",
+        faceHover: "johnson.png",
+        image: "johnson2.png",
+        gender: "m",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 22,
+        name: "Herschel Walker",
+        function: "ambasador în Bahamas",
+        age: 62,
+        wealth: "N/A",
+        faceDefault: "walker1.png",
+        faceHover: "walker.png",
+        image: "walker2.png",
+        gender: "m",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    
+    
+    {
+        id: 49,
+        name: "Susie Wiles",
+        function: "șefa de cabinet a lui Donald Trump",
+        age: 67,
+        wealth: "N/A",
+        faceDefault: "wiles1.png",
+        faceHover: "wiles.png",
+        image: "wiles2.png",
+        gender: "f",
+        tipPoz: "casa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 50,
+        name: "Thomas Homan",
+        function: "responsabil pentru situația la graniță",
+        age: 63,
+        wealth: "N/A",
+        faceDefault: "homan1.png",
+        faceHover: "homan.png",
+        image: "homan2.png",
+        gender: "m",
+        tipPoz: "casa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 51,
+        name: "Michael Waltz",
+        function: "consilier pe probleme de securitate națională",
+        age: 50,
+        wealth: "N/A",
+        faceDefault: "waltz1.png",
+        faceHover: "waltz.png",
+        image: "waltz2.png",
+        gender: "m",
+        tipPoz: "casa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 52,
+        name: "Steven Cheung",
+        function: "directorul de comunicare al Casei Albe",
+        age: 42,
+        wealth: "N/A",
+        faceDefault: "cheung1.png",
+        faceHover: "cheung.png",
+        image: "cheung2.png",
+        gender: "m",
+        tipPoz: "casa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    {
+        id: 53,
+        name: "Karoline Leavitt",
+        function: "purtătoarea de cuvânt a Casei Albe",
+        age: 27,
+        wealth: "N/A",
+        faceDefault: "leavitt1.png",
+        faceHover: "leavitt.png",
+        image: "leavitt2.png",
+        gender: "f",
+        tipPoz: "casa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    
+    {
+        id: 56,
+        name: "Sebastian Gorka",
+        function: "asistent adjunct al președintelui Donald Trump responsabil cu lupta împotriva terorismului",
+        age: 54,
+        wealth: "N/A",
+        faceDefault: "gorka1.png",
+        faceHover: "gorka.png",
+        image: "gorka2.png",
+        gender: "m",
+        tipPoz: "casa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    
+    {
+        id: 58,
+        name: "Keith Kellogg",
+        function: "reprezentantul pentru Ucraina și Rusia",
+        age: 80,
+        wealth: "N/A",
+        faceDefault: "kellogg1.png",
+        faceHover: "kellogg.png",
+        image: "kellogg2.png",
+        gender: "m",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    
+    {
+        id: 60,
+        name: "Alina Habba",
+        function: "consilieră a președintelui",
+        age: 40,
+        wealth: "N/A",
+        faceDefault: "habba1.png",
+        faceHover: "habba.png",
+        image: "habba2.png",
+        gender: "f",
+        tipPoz: "casa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    },
+    
+    {
+        id: 62,
+        name: "Kari Lake",
+        function: "directoarea Voice of America",
+        age: 55,
+        wealth: "N/A",
+        faceDefault: "lake1.png",
+        faceHover: "lake.png",
+        image: "lake2.png",
+        gender: "f",
+        tipPoz: "externa",
+        inaltime: "N/A",
+        lungime: "N/A",
+        ecuator: "N/A"
+    }
+      // Add more data as needed...
+    ];
+
+    // -----------------------------------------
+    // 1) Bucket definitions for wealth
+    // -----------------------------------------
+    const facesContainer = d3.select("#facesContainer");
+    const tooltip = d3.select("#tooltip");
+
+    function render(dataArray) {
+      facesContainer.html(""); // Clear existing faces
+
+      dataArray.forEach(d => {
+        const img = facesContainer.append("img")
+          .attr("class", "face")
+          .attr("src", d.faceDefault)
+          .attr("data-id", d.id)
+          .on("mouseover", function(event) {
+            hoveredId = d.id;
+            d3.select(this).attr("src", d.faceHover);
+            tooltip
+              .html(`<strong>${d.name}</strong><br/>${d.function}<br/>Vârstă: ${d.age}`)
+              .style("opacity", 1)
+              .style("left", (event.pageX + 10) + "px")
+              .style("top", (event.pageY + 10) + "px");
+          })
+          .on("mousemove", function(event) {
+            tooltip.style("left", (event.pageX + 10) + "px").style("top", (event.pageY + 10) + "px");
+          })
+          .on("mouseout", function() {
+            hoveredId = null;
+            d3.select(this).attr("src", d.faceDefault);
+            tooltip.style("opacity", 0);
+          })
+          .on("click", function() {
+            d3.selectAll(".face").classed("selected", false);
+            selectedId = d.id;
+            d3.select(this).classed("selected", true);
+          });
+      });
+    }
+
+    function setupFilterButton(buttonId, filterKey, filterValue) {
+      document.getElementById(buttonId).addEventListener("click", () => {
+        document.querySelectorAll(".filters button").forEach(b => b.classList.remove("active"));
+        document.getElementById(buttonId).classList.add("active");
+
+        const filteredData = filterValue ? data.filter(d => d[filterKey] === filterValue) : data;
+        render(filteredData);
+      });
+    }
+
+    // Gender Filters
+    setupFilterButton("filtruGenBarbati", "gender", "m");
+    setupFilterButton("filtruGenFemei", "gender", "f");
+    setupFilterButton("filtruGenReset", "gender", null);
+
+    // Age Filters
+    setupFilterButton("filtruVarstaSub40", "age", 40);
+    setupFilterButton("filtruVarsta40_60", "age", 50);
+    setupFilterButton("filtruVarstaPeste60", "age", 60);
+    setupFilterButton("filtruVarstaReset", "age", null);
+
+    // Position Filters
+    setupFilterButton("filtruTipCabinet", "tipPoz", "cabinet");
+    setupFilterButton("filtruTipExtern", "tipPoz", "extern");
+    setupFilterButton("filtruTipCasa", "tipPoz", "casa");
+    setupFilterButton("filtruTipPres", "tipPoz", "presedinte");
+    setupFilterButton("filtruTipReset", "tipPoz", null);
+
+    // Initial Render
+    render(data);
+  </script>
+
+</body>
+</html>

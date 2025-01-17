@@ -651,6 +651,13 @@
 
     // Initial Render
     render(data);
+
+    function sendHeight() {
+        window.parent.postMessage(document.body.scrollHeight, "*");
+    }
+    
+    window.addEventListener("load", sendHeight);
+    window.addEventListener("resize", sendHeight);
   </script>
 
 </body>

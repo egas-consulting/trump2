@@ -26,32 +26,59 @@
 
     /* Responsive Filters */
     .filters {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-    .filters .filter-group {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 5px;
-    }
-    .filters button {
-      padding: 8px 12px;
-      cursor: pointer;
-      border: 1px solid #8F99AD;
-      border-radius: 8px;
-      background: transparent;
-      color: #2C2D41;
-      font-weight: 500;
-      font-size: 14px;
-    }
-    .filters button.active {
-      background-color: #2C2D41;
-      color: #EFF1F3;
-    }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3px; /* Slightly reduce space */
+  margin-bottom: 10px;
+}
+
+.filters .filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3px;
+}
+
+.filters button {
+  padding: 5px 8px; /* Reduce padding */
+  font-size: 12px; /* Slightly smaller font */
+  border: 1px solid #8F99AD; /* Keep your original border */
+  border-radius: 6px; /* Keep rounded corners */
+  background: transparent; /* Maintain transparency */
+  color: #2C2D41; /* Keep text color */
+  font-weight: 500;
+  cursor: pointer; /* Ensure pointer cursor */
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.filters button.active {
+  background-color: #2C2D41;
+  color: #EFF1F3;
+}
+
+@media (max-width: 768px) {
+  .filters {
+    flex-wrap: wrap; /* Make sure buttons don’t stack unnecessarily */
+    justify-content: center;
+  }
+
+  .filters button {
+    font-size: 11px; /* Smaller font */
+    padding: 4px 7px; /* Smaller padding */
+  }
+}
+
+@media (max-width: 480px) {
+  .filters {
+    justify-content: center; /* Keep alignment */
+  }
+
+  .filters button {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+}
 
     /* Responsive Face Display */
     .faces-container {

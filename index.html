@@ -29,15 +29,47 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 3px; /* Slightly reduce space */
+  gap: 10px; /* Increase spacing for better readability */
   margin-bottom: 10px;
 }
 
 .filters .filter-group {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 3px;
+  align-items: center; /* Ensures text stays aligned */
+  gap: 5px; /* Adjust button spacing */
+}
+
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: row; /* Ensure buttons try to stay in a row */
+    flex-wrap: wrap;
+  }
+
+  .filters .filter-group {
+    flex-direction: row; /* Keep buttons in the same row */
+  }
+}
+
+@media (max-width: 480px) {
+  .filters {
+    justify-content: center;
+    gap: 5px; /* Reduce gap for smaller screens */
+  }
+
+  .filters .filter-group {
+    flex-direction: row; /* Prevent stacking */
+  }
+
+  .filters button {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+}
+
+.filters .filter-group strong {
+  white-space: nowrap; /* Prevents text wrapping */
+  margin-right: 5px;
 }
 
 .filters button {
@@ -57,11 +89,6 @@
   color: #EFF1F3;
 }
 
-@media (max-width: 768px) {
-  .filters {
-    flex-wrap: wrap; /* Make sure buttons don’t stack unnecessarily */
-    justify-content: center;
-  }
 
   .filters button {
     font-size: 11px; /* Smaller font */
@@ -124,17 +151,7 @@
       text-align: left;
     }
 
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-      .face {
-        width: 12vw; /* Larger images for smaller screens */
-      }
-      .filters {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-
+    
     @media (max-width: 480px) {
       .face {
         width: 15vw;
@@ -628,6 +645,7 @@
             d3.select(this).attr("src", d.faceHover);
             tooltip
               .html(`<strong>${d.name}</strong><br/>${d.function}<br/>Vârstă: ${d.age}`)
+              
               .style("opacity", 1)
               .style("left", (event.pageX + 10) + "px")
               .style("top", (event.pageY + 10) + "px");

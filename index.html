@@ -26,86 +26,68 @@
 
     /* Responsive Filters */
     .filters {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px; /* Increase spacing for better readability */
-  margin-bottom: 10px;
-}
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px; /* Increase spacing for better readability */
+      margin-bottom: 10px;
+    }
 
-.filters .filter-group {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center; /* Ensures text stays aligned */
-  gap: 5px; /* Adjust button spacing */
-}
+    .filters .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center; /* Ensures text stays aligned */
+      gap: 5px; /* Adjust button spacing */
+    }
 
-@media (max-width: 768px) {
-  .filters {
-    flex-direction: row; /* Ensure buttons try to stay in a row */
-    flex-wrap: wrap;
-  }
+    @media (max-width: 768px) {
+      .filters {
+        flex-direction: row; /* Ensure buttons try to stay in a row */
+        flex-wrap: wrap;
+      }
 
-  .filters .filter-group {
-    flex-direction: row; /* Keep buttons in the same row */
-  }
-}
+      .filters .filter-group {
+        flex-direction: row; /* Keep buttons in the same row */
+      }
+    }
 
-@media (max-width: 480px) {
-  .filters {
-    justify-content: center;
-    gap: 5px; /* Reduce gap for smaller screens */
-  }
+    @media (max-width: 480px) {
+      .filters {
+        justify-content: center;
+        gap: 5px; /* Reduce gap for smaller screens */
+      }
 
-  .filters .filter-group {
-    flex-direction: row; /* Prevent stacking */
-  }
+      .filters .filter-group {
+        flex-direction: column; /* Allow vertical stacking for better readability */
+      }
 
-  .filters button {
-    font-size: 10px;
-    padding: 3px 6px;
-  }
-}
+      .filters button {
+        font-size: 10px;
+        padding: 3px 6px;
+      }
+    }
 
-.filters .filter-group strong {
-  white-space: nowrap; /* Prevents text wrapping */
-  margin-right: 5px;
-}
+    .filters .filter-group strong {
+      white-space: nowrap; /* Prevents text wrapping */
+      margin-right: 5px;
+    }
 
-.filters button {
-  padding: 5px 8px; /* Reduce padding */
-  font-size: 12px; /* Slightly smaller font */
-  border: 1px solid #8F99AD; /* Keep your original border */
-  border-radius: 6px; /* Keep rounded corners */
-  background: transparent; /* Maintain transparency */
-  color: #2C2D41; /* Keep text color */
-  font-weight: 500;
-  cursor: pointer; /* Ensure pointer cursor */
-  transition: background 0.2s ease, color 0.2s ease;
-}
+    .filters button {
+      padding: 5px 8px; /* Reduce padding */
+      font-size: 12px; /* Slightly smaller font */
+      border: 1px solid #8F99AD; /* Keep your original border */
+      border-radius: 6px; /* Keep rounded corners */
+      background: transparent; /* Maintain transparency */
+      color: #2C2D41; /* Keep text color */
+      font-weight: 500;
+      cursor: pointer; /* Ensure pointer cursor */
+      transition: background 0.2s ease, color 0.2s ease;
+    }
 
-.filters button.active {
-  background-color: #2C2D41;
-  color: #EFF1F3;
-}
-
-
-  .filters button {
-    font-size: 11px; /* Smaller font */
-    padding: 4px 7px; /* Smaller padding */
-  }
-}
-
-@media (max-width: 480px) {
-  .filters {
-    justify-content: center; /* Keep alignment */
-  }
-
-  .filters button {
-    font-size: 10px;
-    padding: 3px 6px;
-  }
-}
+    .filters button.active {
+      background-color: #2C2D41;
+      color: #EFF1F3;
+    }
 
     /* Responsive Face Display */
     .faces-container {
@@ -151,7 +133,6 @@
       text-align: left;
     }
 
-    
     @media (max-width: 480px) {
       .face {
         width: 15vw;
@@ -206,9 +187,8 @@
     let selectedId = null;
     let hoveredId = null;
 
-    // data
+    // Data
     let data = [
-      
       {
         id: 1,
         name: "Tulsi Gabbard",
@@ -223,9 +203,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-        },
-    
-    {
+      },
+      {
         id: 4,
         name: "Doug Collins",
         function: "secretarul pentru Veterani",
@@ -239,8 +218,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 5,
         name: "Brooke Rollins",
         function: "secretarul pentru Agricultură",
@@ -254,8 +233,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 6,
         name: "Sean Duffy",
         function: "secretarul pentru Transporturi",
@@ -269,8 +248,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 7,
         name: "Martin A. Makary",
         function: "secretarul pentru Alimentație și Medicamente",
@@ -284,8 +263,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 8,
         name: "Matthew G. Whitaker",
         function: "ambasador la NATO",
@@ -299,9 +278,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    
-    {
+      },
+      {
         id: 10,
         name: "Dave Weldon",
         function: "directorul Centrelor pentru Controlul și Prevenirea Bolilor",
@@ -315,8 +293,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 11,
         name: "Janette Nesheiwat",
         function: "chirurgul general",
@@ -330,11 +308,11 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 12,
         name: "Russell T. Vought",
-        function: "directorul Oficiului pentru Management și Buget",
+        function: "directorul de comunicare al Casei Albe",
         age: 48,
         wealth: "N/A",
         faceDefault: "vought1.png",
@@ -345,8 +323,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 13,
         name: "Stephen Miran",
         function: "președintele Consiliului consultanților economici",
@@ -360,9 +338,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    
-    {
+      },
+      {
         id: 15,
         name: "Jamieson Greer",
         function: "reprezentantul SUA pentru Comerț",
@@ -376,8 +353,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 16,
         name: "Jay Bhattacharya",
         function: "directorul Institutelor de Sănătate",
@@ -391,8 +368,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 17,
         name: "John Phelan",
         function: "secretarul pentru Marină",
@@ -406,8 +383,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 18,
         name: "Daniel Driscoll",
         function: "secretarul pentru Armată",
@@ -421,8 +398,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 19,
         name: "Paul Atkins",
         function: "președintele Comisiei pentru valori mobiliare și burse",
@@ -436,11 +413,11 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 20,
         name: "Brandon Judd",
-        function: "ambasador în Chile",
+        function: "ambasador în Bahamas",
         age: "N/A",
         wealth: "N/A",
         faceDefault: "judd1.png",
@@ -451,8 +428,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 21,
         name: "Ronald D. Johnson",
         function: "ambasador în Mexic",
@@ -466,8 +443,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 22,
         name: "Herschel Walker",
         function: "ambasador în Bahamas",
@@ -481,10 +458,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    
-    
-    {
+      },
+      {
         id: 49,
         name: "Susie Wiles",
         function: "șefa de cabinet a lui Donald Trump",
@@ -498,8 +473,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 50,
         name: "Thomas Homan",
         function: "responsabil pentru situația la graniță",
@@ -513,8 +488,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 51,
         name: "Michael Waltz",
         function: "consilier pe probleme de securitate națională",
@@ -528,8 +503,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 52,
         name: "Steven Cheung",
         function: "directorul de comunicare al Casei Albe",
@@ -543,8 +518,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    {
+      },
+      {
         id: 53,
         name: "Karoline Leavitt",
         function: "purtătoarea de cuvânt a Casei Albe",
@@ -558,9 +533,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    
-    {
+      },
+      {
         id: 56,
         name: "Sebastian Gorka",
         function: "asistent adjunct al președintelui Donald Trump responsabil cu lupta împotriva terorismului",
@@ -574,9 +548,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    
-    {
+      },
+      {
         id: 58,
         name: "Keith Kellogg",
         function: "reprezentantul pentru Ucraina și Rusia",
@@ -590,9 +563,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    
-    {
+      },
+      {
         id: 60,
         name: "Alina Habba",
         function: "consilieră a președintelui",
@@ -606,9 +578,8 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    },
-    
-    {
+      },
+      {
         id: 62,
         name: "Kari Lake",
         function: "directoarea Voice of America",
@@ -622,16 +593,14 @@
         inaltime: "N/A",
         lungime: "N/A",
         ecuator: "N/A"
-    }
+      }
       // Add more data as needed...
     ];
 
-    // -----------------------------------------
-    // 1) Bucket definitions for wealth
-    // -----------------------------------------
     const facesContainer = d3.select("#facesContainer");
     const tooltip = d3.select("#tooltip");
 
+    // Function to render faces based on filtered data
     function render(dataArray) {
       facesContainer.html(""); // Clear existing faces
 
@@ -645,7 +614,6 @@
             d3.select(this).attr("src", d.faceHover);
             tooltip
               .html(`<strong>${d.name}</strong><br/>${d.function}<br/>Vârstă: ${d.age}`)
-              
               .style("opacity", 1)
               .style("left", (event.pageX + 10) + "px")
               .style("top", (event.pageY + 10) + "px");
@@ -666,39 +634,60 @@
       });
     }
 
-    function setupFilterButton(buttonId, filterKey, filterValue) {
+    // Refactored setupFilterButton to accept a custom filter function
+    function setupFilterButton(buttonId, filterFn) {
       document.getElementById(buttonId).addEventListener("click", () => {
-        document.querySelectorAll(".filters button").forEach(b => b.classList.remove("active"));
+        // Remove 'active' class from all buttons in the same filter group
+        const filterGroup = document.getElementById(buttonId).parentElement;
+        filterGroup.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+        // Add 'active' class to the clicked button
         document.getElementById(buttonId).classList.add("active");
 
-        const filteredData = filterValue ? data.filter(d => d[filterKey] === filterValue) : data;
+        // Apply the filter function
+        const filteredData = filterFn ? data.filter(filterFn) : data;
         render(filteredData);
       });
     }
 
     // Gender Filters
-    setupFilterButton("filtruGenBarbati", "gender", "m");
-    setupFilterButton("filtruGenFemei", "gender", "f");
-    setupFilterButton("filtruGenReset", "gender", null);
+    setupFilterButton("filtruGenBarbati", d => d.gender === "m");
+    setupFilterButton("filtruGenFemei", d => d.gender === "f");
+    setupFilterButton("filtruGenReset", null); // Show all
 
     // Age Filters
-    setupFilterButton("filtruVarstaSub40", "age", 40);
-    setupFilterButton("filtruVarsta40_60", "age", 50);
-    setupFilterButton("filtruVarstaPeste60", "age", 60);
-    setupFilterButton("filtruVarstaReset", "age", null);
+    setupFilterButton("filtruVarstaSub40", d => typeof d.age === 'number' && d.age < 40);
+    setupFilterButton("filtruVarsta40_60", d => typeof d.age === 'number' && d.age >= 40 && d.age <= 60);
+    setupFilterButton("filtruVarstaPeste60", d => typeof d.age === 'number' && d.age > 60);
+    setupFilterButton("filtruVarstaReset", null); // Show all
 
-    // Position Filters
-    setupFilterButton("filtruTipCabinet", "tipPoz", "cabinet");
-    setupFilterButton("filtruTipExtern", "tipPoz", "extern");
-    setupFilterButton("filtruTipCasa", "tipPoz", "casa");
-    setupFilterButton("filtruTipPres", "tipPoz", "presedinte");
-    setupFilterButton("filtruTipReset", "tipPoz", null);
+    // Position Type Filters
+    setupFilterButton("filtruTipCabinet", d => d.tipPoz === "cabinet");
+    setupFilterButton("filtruTipExtern", d => d.tipPoz === "externa" || d.tipPoz === "extern");
+    setupFilterButton("filtruTipCasa", d => d.tipPoz === "casa");
+    setupFilterButton("filtruTipPres", d => d.tipPoz === "presedinte si vice" || d.tipPoz === "presedinte");
+    setupFilterButton("filtruTipReset", null); // Show all
 
     // Initial Render
     render(data);
 
+    // Handle Initial Active States
+    document.querySelectorAll(".filters .filter-group").forEach(group => {
+      const activeBtn = group.querySelector(".active");
+      if (activeBtn) {
+        activeBtn.click();
+      }
+    });
+
+    // Optional: Handle click outside to deselect
+    document.addEventListener("click", function(event) {
+      if (!event.target.classList.contains("face")) {
+        d3.selectAll(".face").classed("selected", false);
+        selectedId = null;
+      }
+    });
+
     function sendHeight() {
-        window.parent.postMessage(document.body.scrollHeight, "*");
+      window.parent.postMessage(document.body.scrollHeight, "*");
     }
     
     window.addEventListener("load", sendHeight);
